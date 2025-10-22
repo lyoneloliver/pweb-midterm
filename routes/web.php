@@ -23,7 +23,8 @@ use App\Http\Controllers\Lecturer\{
 Route::middleware('guest')->group(function () {
     Route::get('/', [LoginController::class, 'showLoginForm'])->name('login');
     Route::post('/login', [LoginController::class, 'login'])->name('login.post');
-    Route::get('/register', [RegisterController::class, 'showRegisterForm'])->name('register');
+    // PERUBAHAN DI SINI: showRegisterForm menjadi showRegistrationForm
+    Route::get('/register', [RegisterController::class, 'showRegistrationForm'])->name('register'); 
     Route::post('/register', [RegisterController::class, 'register'])->name('register.post');
 });
 Route::post('/logout', [LogoutController::class, 'logout'])->name('logout')->middleware('auth');

@@ -21,7 +21,7 @@
             <img src="{{ asset('logo.png') }}" alt="ITSr Logo" class="login-logo">
             
             <div class="login-header">
-                <h2>Welcome Back to ITSr</h2>
+                <h2>Welcome to ITSr</h2>
                 <p>Please sign in to your secure portal.</p>
             </div>
 
@@ -33,7 +33,7 @@
                 <div class="alert alert-success">{{ session('status') }}</div>
             @endif
 
-            <form method="POST" action="{{ route('login') }}">
+            <form method="POST" action="{{ route('login.post') }}"> {{-- <-- PERUBAHAN DI SINI --}}
                 @csrf
 
                 <div class="input-group">

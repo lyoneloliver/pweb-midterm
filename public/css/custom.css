@@ -18,7 +18,7 @@
     --icon-color-dark: #888; /* Darker icon color */
     
     /* Variables for the animated dot pattern */
-    --dot-color: rgba(0, 0, 0, 0.1); /* **DITEBALKAN: Opacity dinaikkan ke 0.3** */
+    --dot-color: rgba(0, 0, 0, 0.1); /* Opacity dinaikkan ke 0.1, karena sudah bagus */
     --dot-size: 2px;
     --dot-spacing: 46.85px; /* Adjust spacing between dots */
     --animation-speed: 60s; /* Speed of dots moving upwards */
@@ -43,24 +43,24 @@ body, html {
 }
 
 body.login-body {
-    background-color: var(--background-base); /* Base white/light grey background */
+    background-color: var(--background-base);
     position: relative;
-    overflow: hidden;
+    overflow: hidden; /* Sembunyikan overflow pada body agar background tidak ikut scroll */
     min-height: 100vh;
     box-sizing: border-box;
-    display: grid;
-    place-items: center; /* Center the login card */
+    display: flex; /* Menggunakan flexbox untuk centering */
+    justify-content: center; /* Center horizontal */
+    align-items: center; /* **PERUBAHAN:** Center vertical. Jika konten terlalu panjang, ini akan menempatkan form dari atas */
     
     /* Overlay for the fading effect */
     &::before {
         content: '';
-        position: absolute;
+        position: fixed; /* Fixed agar tidak ikut scroll */
         top: 0;
         left: 0;
         width: 100%;
         height: 100%;
         z-index: 1; /* Above the pattern, below the content */
-        /* Gradient for top and bottom fade (matching background-base) */
         background: linear-gradient(
             to bottom, 
             var(--background-base) 0%, 
@@ -75,7 +75,7 @@ body.login-body {
 /* --- Animated Dot Pattern Layer --- */
 body.login-body::after {
     content: '';
-    position: absolute;
+    position: fixed; /* Fixed agar tidak ikut scroll */
     top: -100%; /* Start pattern off-screen above */
     left: 0;
     width: 100%;
@@ -102,11 +102,24 @@ body.login-body::after {
 /* --- Login Wrapper & Container (Card) --- */
 .login-wrapper {
     position: relative;
-    z-index: 10; /* Ensure login card is above all background elements */
+    z-index: 1000; /* Ensure login card is above all background elements */
     width: 100%;
     max-width: 480px; /* Slightly wider for a more premium feel */
-    padding: 20px;
-    box-sizing: border-box;
+    
+    /* Untuk membuat wrapper bisa di-scroll */
+    max-height: 100vh; /* Memberi sedikit ruang di atas dan bawah dari viewport */
+    overflow-y: auto; /* Mengaktifkan scrolling vertikal */
+    padding: 20px; /* **PERUBAHAN:** Padding di sini akan berfungsi sebagai margin eksternal */
+    box-sizing: border-box; /* Pastikan padding tidak menambah lebar/tinggi */
+    
+    /* Sembunyikan scrollbar */
+    -ms-overflow-style: none; /* IE and Edge */
+    scrollbar-width: none; /* Firefox */
+}
+
+/* Untuk menyembunyikan scrollbar di Webkit (Chrome, Safari) */
+.login-wrapper::-webkit-scrollbar {
+    display: none;
 }
 
 .login-container {
@@ -115,27 +128,28 @@ body.login-body::after {
     box-sizing: border-box;
     
     background: var(--card-bg); /* White card background */
-    /* No backdrop-filter blur here for a crisp, clean light mode look */
     border: 1px solid var(--card-border); /* Light border */
     border-radius: 20px; /* Modern, slightly less rounded */
-    box-shadow: 0 15px 40px var(--card-shadow), /* More subtle, spread out shadow */
-                0 0 0 1px rgba(0, 0, 0, 0.03) inset; /* Very light inner border/highlight */
+    /* **PERUBAHAN KRITIS:** Hilangkan box-shadow default */
+    box-shadow: none; 
     text-align: center;
     transition: all 0.4s cubic-bezier(0.2, 0.8, 0.2, 1); 
 }
 
 .login-container:hover {
     transform: translateY(-8px); 
-    box-shadow: 0 25px 60px rgba(0, 0, 0, 0.15); /* Deeper shadow on hover */
-    border-color: #D0D0D0; /* Slight border change on hover */
+    /* **PERUBAHAN:** Tampilkan box-shadow hanya saat hover */
+    box-shadow: 0 15px 40px var(--card-shadow), 
+                0 0 0 1px rgba(0, 0, 0, 0.03) inset;
+    border-color: #D0D0D0;
 }
 
 /* --- Logo & Header --- */
 .login-logo {
-    width: 90px; /* Slightly larger logo */
+    width: 90px;
     height: auto;
     margin-bottom: 2.8rem;
-    filter: drop-shadow(0 4px 10px rgba(0,0,0,0.2)); /* Lighter logo shadow */
+    filter: drop-shadow(0 4px 10px rgba(0,0,0,0.2));
     transition: transform 0.4s cubic-bezier(0.2, 0.8, 0.2, 1);
 }
 .login-logo:hover {
@@ -144,18 +158,18 @@ body.login-body::after {
 
 .login-header {
     margin-bottom: 3.2rem;
-    color: var(--primary-text-dark); /* Dark text for header */
+    color: var(--primary-text-dark);
 }
 .login-header h2 {
-    font-size: 2.8rem; /* Larger, bolder title */
+    font-size: 2.8rem;
     font-weight: 700;
     margin: 0;
     line-height: 1.15;
     letter-spacing: -0.04em; 
 }
 .login-header p {
-    font-size: 1.1rem; /* Slightly larger subtitle */
-    color: var(--secondary-text-dark); /* Muted dark text */
+    font-size: 1.1rem;
+    color: var(--secondary-text-dark);
     margin-top: 1.2rem;
     opacity: 0.9;
 }
@@ -182,10 +196,22 @@ body.login-body::after {
     border: 1px solid var(--alert-success-text);
     color: var(--alert-success-text);
 }
+.alert ul {
+    margin: 0;
+    padding: 0 0 0 1.2rem;
+    list-style-type: disc;
+}
+.alert ul li {
+    margin-bottom: 0.5rem;
+}
+.alert ul li:last-child {
+    margin-bottom: 0;
+}
+
 
 /* --- Form Groups --- */
 .input-group {
-    margin-bottom: 2rem; /* Increased spacing */
+    margin-bottom: 2rem;
     text-align: left;
 }
 
@@ -207,40 +233,40 @@ body.login-body::after {
 
 .icon-input {
     position: absolute;
-    left: 22px; /* Adjusted icon padding */
+    left: 22px;
     top: 50%;
     transform: translateY(-50%);
-    color: var(--icon-color-dark); /* Darker icon color */
+    color: var(--icon-color-dark);
     pointer-events: none;
     transition: color 0.3s ease;
 }
 
 .form-control {
     width: 100%;
-    padding: 1.4rem 1.8rem; /* More generous padding */
-    padding-left: 60px; /* More space for icon */
-    font-size: 1.05rem; /* Slightly larger input text */
+    padding: 1.4rem 1.8rem;
+    padding-left: 60px;
+    font-size: 1.05rem;
     font-family: 'Inter', sans-serif;
-    color: var(--primary-text-dark); /* Dark text input */
+    color: var(--primary-text-dark);
     
-    background: var(--input-bg-light); /* Light input background */
-    border: 1px solid var(--input-border-light); /* Light input border */
+    background: var(--input-bg-light);
+    border: 1px solid var(--input-border-light);
     
-    border-radius: 14px; /* Rounded input */
+    border-radius: 14px;
     box-sizing: border-box;
     transition: all 0.3s ease;
 }
 
 .form-control::placeholder {
-    color: var(--input-placeholder-dark); /* Darker placeholder */
+    color: var(--input-placeholder-dark);
     opacity: 0.8;
 }
 
 .form-control:focus {
     outline: none;
     border-color: var(--primary-color);
-    background: #FFFFFF; /* White background on focus */
-    box-shadow: 0 0 0 4px rgba(74, 144, 226, 0.3); /* Softer blue glow */
+    background: #FFFFFF;
+    box-shadow: 0 0 0 4px rgba(74, 144, 226, 0.3);
 }
 
 .input-with-icon:focus-within .icon-input {
@@ -255,7 +281,7 @@ body.login-body::after {
     font-size: 1rem;
     margin-top: 2.5rem;
     margin-bottom: 3.5rem;
-    color: var(--secondary-text-dark); /* Muted dark text */
+    color: var(--secondary-text-dark);
 }
 
 .form-options .checkbox-label {
@@ -265,7 +291,7 @@ body.login-body::after {
     transition: color 0.2s;
 }
 .form-options .checkbox-label:hover {
-    color: var(--primary-text-dark); /* Darker text on hover */
+    color: var(--primary-text-dark);
 }
 
 .form-options input[type="checkbox"] {
@@ -277,7 +303,7 @@ body.login-body::after {
 }
 
 .form-options a {
-    color: var(--primary-color); /* Primary blue for links */
+    color: var(--primary-color);
     text-decoration: none;
     font-weight: 500;
     transition: text-decoration 0.2s, color 0.2s;
@@ -290,9 +316,9 @@ body.login-body::after {
 /* --- Login Button --- */
 .btn-login {
     width: 100%;
-    padding: 1.5rem; /* Even larger, more impactful button */
+    padding: 1.5rem;
     background-color: var(--primary-color);
-    color: #FFFFFF; /* White text on blue button */
+    color: #FFFFFF;
     border: none;
     border-radius: 16px; 
     font-size: 1.15rem;
@@ -312,9 +338,9 @@ body.login-body::after {
 /* --- Register Link --- */
 .register-link {
     text-align: center;
-    margin-top: 4rem; /* More space below button */
+    margin-top: 4rem;
     font-size: 1.05rem;
-    color: var(--secondary-text-dark); /* Muted dark text */
+    color: var(--secondary-text-dark);
 }
 
 .register-link a {
@@ -331,17 +357,20 @@ body.login-body::after {
 /* --- Responsive --- */
 @media (max-width: 500px) {
     .login-wrapper {
-        padding: 0;
+        padding: 0; /* Menghilangkan padding lateral pada wrapper untuk mobile */
+        max-height: 100vh; /* Memastikan wrapper bisa scroll seluruh tinggi viewport di mobile */
+        padding-top: 10px; /* Sedikit padding atas/bawah untuk mobile */
+        padding-bottom: 10px;
     }
     .login-container {
         padding: 3rem 1.8rem;
-        border-radius: 0;
-        box-shadow: none;
-        min-height: 100vh;
+        border-radius: 0; /* Hilangkan border-radius di mobile */
+        box-shadow: none; /* Hilangkan shadow di mobile */
+        min-height: auto; /* Memastikan konten bisa scroll di mobile */
         display: flex;
         flex-direction: column;
         justify-content: center;
-        background: var(--card-bg); /* Keep white card on mobile */
+        background: var(--card-bg);
         border: none;
     }
     .login-logo {
@@ -373,7 +402,7 @@ body.login-body::after {
     }
     /* Mobile pattern adjustments */
     body.login-body::after {
-        background-size: 30px 30px; /* **Diperbarui: Jarak antar titik sedikit dikurangi** */
+        background-size: 30px 30px;
         opacity: 0.9; 
     }
 }
