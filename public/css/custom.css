@@ -1,19 +1,35 @@
 /* --- Root Variables --- */
 :root {
-    --primary-text: #222;
-    --secondary-text: #666;
-    --background-base: #F8F8F8; /* Base color for the background */
-    --card-bg: #FFFFFF;
-    --card-border: #E0E0E0;
-    --card-shadow: rgba(0, 0, 0, 0.05);
-    --load-more-bg: #F0F0F0;
-    --load-more-hover-bg: #E0E0E0;
+    --primary-color: #4A90E2; /* Professional blue */
+    --primary-hover: #357ABD;
+    --background-base: #F8F8F8; /* Base white/light grey background */
+
+    /* NEW: Card design for light mode */
+    --card-bg: #FFFFFF; /* White card background */
+    --card-border: #E8E8E8; /* Light border for the card */
+    --card-shadow: rgba(0, 0, 0, 0.08); /* Subtle shadow for elevation */
+
+    /* Text colors for light mode */
+    --primary-text-dark: #222; /* Dark text for titles and main content */
+    --secondary-text-dark: #666; /* Muted text for descriptions */
+    --input-bg-light: #F9F9F9; /* Light background for inputs */
+    --input-border-light: #E0E0E0; /* Light border for inputs */
+    --input-placeholder-dark: #A0A0A0; /* Darker placeholder */
+    --icon-color-dark: #888; /* Darker icon color */
     
-    /* NEW: Variables for the animated dot pattern */
-    --dot-color: rgba(180, 180, 180, 0.2); /* Very subtle grey dots */
+    /* Variables for the animated dot pattern */
+    --dot-color: rgba(0, 0, 0, 0.15); /* INCREASED OPACITY: More visible black dots */
     --dot-size: 1px;
     --dot-spacing: 25px; /* Adjust spacing between dots */
     --animation-speed: 60s; /* Speed of dots moving upwards */
+
+    --alert-error-bg: #ffebee;
+    --alert-error-text: #c62828;
+    --alert-success-bg: #e8f5e9;
+    --alert-success-text: #2e7d32;
+
+    /* Text colors for alerts */
+    --alert-text-dark: #333;
 }
 
 /* --- Base & Body --- */
@@ -26,16 +42,14 @@ body, html {
     -moz-osx-font-smoothing: grayscale;
 }
 
-body.projects-body {
-    background-color: var(--background-base); /* Base background color */
-    position: relative; /* Needed for absolute positioning of background layers */
-    overflow: hidden; /* Hide anything overflowing, crucial for fading edges */
+body.login-body {
+    background-color: var(--background-base); /* Base white/light grey background */
+    position: relative;
+    overflow: hidden;
     min-height: 100vh;
     box-sizing: border-box;
-    display: flex; /* For centering content vertically if needed, or just layout */
-    flex-direction: column;
-    align-items: center;
-    padding: 40px 20px; /* Padding for the main content */
+    display: grid;
+    place-items: center; /* Center the login card */
     
     /* Overlay for the fading effect */
     &::before {
@@ -46,7 +60,7 @@ body.projects-body {
         width: 100%;
         height: 100%;
         z-index: 1; /* Above the pattern, below the content */
-        /* Gradient for top and bottom fade */
+        /* Gradient for top and bottom fade (matching background-base) */
         background: linear-gradient(
             to bottom, 
             var(--background-base) 0%, 
@@ -54,12 +68,12 @@ body.projects-body {
             transparent 90%, 
             var(--background-base) 100%
         );
-        pointer-events: none; /* Allows clicks to pass through */
+        pointer-events: none;
     }
 }
 
 /* --- Animated Dot Pattern Layer --- */
-.projects-body::after {
+body.login-body::after {
     content: '';
     position: absolute;
     top: -100%; /* Start pattern off-screen above */
@@ -85,170 +99,281 @@ body.projects-body {
     }
 }
 
+/* --- Login Wrapper & Container (Card) --- */
+.login-wrapper {
+    position: relative;
+    z-index: 10; /* Ensure login card is above all background elements */
+    width: 100%;
+    max-width: 480px; /* Slightly wider for a more premium feel */
+    padding: 20px;
+    box-sizing: border-box;
+}
 
-/* --- Container --- */
-.container {
-    max-width: 1200px;
-    margin: 0 auto;
+.login-container {
+    width: 100%;
+    padding: 4rem; /* More generous padding */
+    box-sizing: border-box;
+    
+    background: var(--card-bg); /* White card background */
+    /* No backdrop-filter blur here for a crisp, clean light mode look */
+    border: 1px solid var(--card-border); /* Light border */
+    border-radius: 20px; /* Modern, slightly less rounded */
+    box-shadow: 0 15px 40px var(--card-shadow), /* More subtle, spread out shadow */
+                0 0 0 1px rgba(0, 0, 0, 0.03) inset; /* Very light inner border/highlight */
     text-align: center;
-    position: relative; /* Ensure container content is above background layers */
-    z-index: 2; /* Make sure it's above the fading overlay */
-    width: 100%; /* Ensure it takes full width up to max-width */
+    transition: all 0.4s cubic-bezier(0.2, 0.8, 0.2, 1); 
 }
 
-/* --- Page Title --- */
-.page-title {
-    font-size: 3.5rem; /* Larger title as in example */
+.login-container:hover {
+    transform: translateY(-8px); 
+    box-shadow: 0 25px 60px rgba(0, 0, 0, 0.15); /* Deeper shadow on hover */
+    border-color: #D0D0D0; /* Slight border change on hover */
+}
+
+/* --- Logo & Header --- */
+.login-logo {
+    width: 90px; /* Slightly larger logo */
+    height: auto;
+    margin-bottom: 2.8rem;
+    filter: drop-shadow(0 4px 10px rgba(0,0,0,0.2)); /* Lighter logo shadow */
+    transition: transform 0.4s cubic-bezier(0.2, 0.8, 0.2, 1);
+}
+.login-logo:hover {
+    transform: scale(1.08);
+}
+
+.login-header {
+    margin-bottom: 3.2rem;
+    color: var(--primary-text-dark); /* Dark text for header */
+}
+.login-header h2 {
+    font-size: 2.8rem; /* Larger, bolder title */
     font-weight: 700;
-    color: var(--primary-text);
-    margin-bottom: 3.5rem;
-    letter-spacing: -0.05em; /* Tighter letter spacing */
-    padding-top: 20px; /* Space from top */
-}
-
-/* --- Projects Grid --- */
-.projects-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); /* Responsive grid */
-    gap: 25px; /* Space between cards */
-    margin-bottom: 3rem;
-}
-
-/* --- Project Card --- */
-.project-card {
-    display: flex;
-    align-items: center;
-    text-align: left;
-    background-color: var(--card-bg);
-    border: 1px solid var(--card-border);
-    border-radius: 12px;
-    padding: 20px 25px;
-    box-shadow: 0 4px 15px var(--card-shadow);
-    text-decoration: none; /* Remove underline from link */
-    color: inherit;
-    transition: all 0.3s ease; /* Smooth hover effects */
-}
-
-.project-card:hover {
-    transform: translateY(-5px); /* Lift effect on hover */
-    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1);
-    border-color: #C0C0C0; /* Slight border change */
-}
-
-.project-icon-wrapper {
-    width: 50px; /* Icon size */
-    height: 50px;
-    min-width: 50px; /* Prevent shrinking */
-    background-color: #F0F0F0; /* Light background for icon */
-    border-radius: 8px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    margin-right: 20px;
-    box-shadow: inset 0 0 0 1px rgba(0,0,0,0.05); /* Subtle inner shadow */
-}
-
-.project-icon {
-    width: 32px; /* Actual image size inside wrapper */
-    height: 32px;
-    object-fit: contain;
-}
-
-.project-details {
-    flex-grow: 1; /* Allow details to take up remaining space */
-}
-
-.project-title {
-    font-size: 1.15rem;
-    font-weight: 600;
-    color: var(--primary-text);
-    margin: 0 0 5px 0;
-    line-height: 1.3;
-}
-
-.project-link {
-    font-size: 0.9rem;
-    color: var(--secondary-text);
     margin: 0;
-    word-break: break-all; /* Ensure long links wrap */
+    line-height: 1.15;
+    letter-spacing: -0.04em; 
+}
+.login-header p {
+    font-size: 1.1rem; /* Slightly larger subtitle */
+    color: var(--secondary-text-dark); /* Muted dark text */
+    margin-top: 1.2rem;
+    opacity: 0.9;
 }
 
-/* --- Load More Button --- */
-.load-more-btn {
-    display: inline-flex;
-    align-items: center;
-    background-color: var(--load-more-bg);
-    color: var(--primary-text);
-    border: 1px solid var(--card-border);
-    padding: 12px 25px;
-    border-radius: 8px;
+/* --- Alerts --- */
+.alert {
+    width: 100%;
+    padding: 1.2rem;
+    margin-bottom: 2.5rem;
+    border-radius: 12px; 
     font-size: 1rem;
     font-weight: 500;
-    cursor: pointer;
+    box-sizing: border-box;
+    text-align: left;
+    color: var(--alert-text-dark); 
+}
+.alert-error {
+    background-color: var(--alert-error-bg);
+    border: 1px solid var(--alert-error-text);
+    color: var(--alert-error-text);
+}
+.alert-success {
+    background-color: var(--alert-success-bg);
+    border: 1px solid var(--alert-success-text);
+    color: var(--alert-success-text);
+}
+
+/* --- Form Groups --- */
+.input-group {
+    margin-bottom: 2rem; /* Increased spacing */
+    text-align: left;
+}
+
+.input-group label.sr-only {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    padding: 0;
+    margin: -1px;
+    overflow: hidden;
+    clip: rect(0, 0, 0, 0);
+    white-space: nowrap;
+    border-width: 0;
+}
+
+.input-with-icon {
+    position: relative;
+}
+
+.icon-input {
+    position: absolute;
+    left: 22px; /* Adjusted icon padding */
+    top: 50%;
+    transform: translateY(-50%);
+    color: var(--icon-color-dark); /* Darker icon color */
+    pointer-events: none;
+    transition: color 0.3s ease;
+}
+
+.form-control {
+    width: 100%;
+    padding: 1.4rem 1.8rem; /* More generous padding */
+    padding-left: 60px; /* More space for icon */
+    font-size: 1.05rem; /* Slightly larger input text */
+    font-family: 'Inter', sans-serif;
+    color: var(--primary-text-dark); /* Dark text input */
+    
+    background: var(--input-bg-light); /* Light input background */
+    border: 1px solid var(--input-border-light); /* Light input border */
+    
+    border-radius: 14px; /* Rounded input */
+    box-sizing: border-box;
     transition: all 0.3s ease;
-    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
 }
 
-.load-more-btn:hover {
-    background-color: var(--load-more-hover-bg);
-    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
-    transform: translateY(-2px);
+.form-control::placeholder {
+    color: var(--input-placeholder-dark); /* Darker placeholder */
+    opacity: 0.8;
 }
 
-.load-more-btn i {
-    margin-right: 10px;
-    font-size: 1.1rem;
-    color: var(--secondary-text);
+.form-control:focus {
+    outline: none;
+    border-color: var(--primary-color);
+    background: #FFFFFF; /* White background on focus */
+    box-shadow: 0 0 0 4px rgba(74, 144, 226, 0.3); /* Softer blue glow */
 }
 
-/* --- Responsive Adjustments --- */
-@media (max-width: 768px) {
-    .page-title {
-        font-size: 2.8rem;
-        margin-bottom: 2.5rem;
+.input-with-icon:focus-within .icon-input {
+    color: var(--primary-color);
+}
+
+/* --- Form Options --- */
+.form-options {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 1rem;
+    margin-top: 2.5rem;
+    margin-bottom: 3.5rem;
+    color: var(--secondary-text-dark); /* Muted dark text */
+}
+
+.form-options .checkbox-label {
+    display: flex;
+    align-items: center;
+    cursor: pointer;
+    transition: color 0.2s;
+}
+.form-options .checkbox-label:hover {
+    color: var(--primary-text-dark); /* Darker text on hover */
+}
+
+.form-options input[type="checkbox"] {
+    margin-right: 0.8rem;
+    accent-color: var(--primary-color);
+    width: 20px; 
+    height: 20px;
+    cursor: pointer;
+}
+
+.form-options a {
+    color: var(--primary-color); /* Primary blue for links */
+    text-decoration: none;
+    font-weight: 500;
+    transition: text-decoration 0.2s, color 0.2s;
+}
+.form-options a:hover {
+    text-decoration: underline;
+    color: var(--primary-hover);
+}
+
+/* --- Login Button --- */
+.btn-login {
+    width: 100%;
+    padding: 1.5rem; /* Even larger, more impactful button */
+    background-color: var(--primary-color);
+    color: #FFFFFF; /* White text on blue button */
+    border: none;
+    border-radius: 16px; 
+    font-size: 1.15rem;
+    font-weight: 600;
+    font-family: 'Inter', sans-serif;
+    cursor: pointer;
+    transition: all 0.4s cubic-bezier(0.2, 0.8, 0.2, 1);
+    box-shadow: 0 12px 35px rgba(74, 144, 226, 0.35); 
+}
+
+.btn-login:hover {
+    background-color: var(--primary-hover);
+    transform: translateY(-5px); 
+    box-shadow: 0 20px 50px rgba(74, 144, 226, 0.45);
+}
+
+/* --- Register Link --- */
+.register-link {
+    text-align: center;
+    margin-top: 4rem; /* More space below button */
+    font-size: 1.05rem;
+    color: var(--secondary-text-dark); /* Muted dark text */
+}
+
+.register-link a {
+    color: var(--primary-color);
+    font-weight: 600;
+    text-decoration: none;
+    transition: text-decoration 0.2s, color 0.2s;
+}
+.register-link a:hover {
+    text-decoration: underline;
+    color: var(--primary-hover);
+}
+
+/* --- Responsive --- */
+@media (max-width: 500px) {
+    .login-wrapper {
+        padding: 0;
     }
-    .projects-grid {
-        grid-template-columns: 1fr; /* Single column on smaller screens */
-        gap: 20px;
+    .login-container {
+        padding: 3rem 1.8rem;
+        border-radius: 0;
+        box-shadow: none;
+        min-height: 100vh;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        background: var(--card-bg); /* Keep white card on mobile */
+        border: none;
     }
-    .project-card {
-        padding: 18px 20px;
+    .login-logo {
+        width: 75px;
+        margin-bottom: 2.2rem;
     }
-    .project-icon-wrapper {
-        width: 45px;
-        height: 45px;
-        min-width: 45px;
-        margin-right: 15px;
+    .login-header h2 {
+        font-size: 2.2rem;
     }
-    .project-icon {
-        width: 28px;
-        height: 28px;
+    .login-header p {
+        font-size: 1rem;
     }
-    .project-title {
+    .form-control {
+        padding: 1.2rem 1.2rem;
+        padding-left: 50px;
+        font-size: 1rem;
+    }
+    .icon-input {
+        left: 18px;
+        width: 20px;
+        height: 20px;
+    }
+    .btn-login {
+        padding: 1.3rem;
         font-size: 1.05rem;
     }
-    .project-link {
-        font-size: 0.85rem;
-    }
-    .load-more-btn {
-        padding: 10px 20px;
+    .register-link, .form-options {
         font-size: 0.95rem;
     }
-    .load-more-btn i {
-        font-size: 1rem;
-        margin-right: 8px;
-    }
-}
-
-@media (max-width: 480px) {
-    body.projects-body {
-        padding: 20px 15px;
-    }
-    .page-title {
-        font-size: 2.2rem;
-        margin-bottom: 2rem;
-    }
-    .projects-grid {
-        gap: 15px;
+    /* Mobile pattern adjustments */
+    body.login-body::after {
+        background-size: 35px 35px; /* Smaller dot spacing on mobile */
+        opacity: 0.9; /* Slightly more visible dots */
     }
 }
