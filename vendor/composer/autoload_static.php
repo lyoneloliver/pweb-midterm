@@ -556,6 +556,7 @@ class ComposerStaticInitc514d8f7b9fc5970bdd94287905ef584
         'App\\Http\\Controllers\\Lecturer\\GradingController' => __DIR__ . '/../..' . '/app/Http/Controllers/Lecturer/GradingController.php',
         'App\\Http\\Controllers\\Student\\EnrollmentController' => __DIR__ . '/../..' . '/app/Http/Controllers/Student/EnrollmentController.php',
         'App\\Http\\Controllers\\UsersController' => __DIR__ . '/../..' . '/app/Http/Controllers/UsersController.php',
+        'App\\Http\\Kernel' => __DIR__ . '/../..' . '/app/Http/Kernel.php',
         'App\\Http\\Middleware\\LogActivity' => __DIR__ . '/../..' . '/app/Http/Middleware/LogActivity.php',
         'App\\Http\\Middleware\\RoleMiddleware' => __DIR__ . '/../..' . '/app/Http/Middleware/RoleMiddleware.php',
         'App\\Models\\AcademicYears' => __DIR__ . '/../..' . '/app/Models/AcademicYears.php',

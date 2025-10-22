@@ -1,0 +1,229 @@
+:root {
+    --primary-color: #4A90E2; /* Biru cerah */
+    --secondary-color: #50E3C2; /* Hijau tosca */
+    --background-base: #F8F9FA; /* Off-white / light gray */
+    --card-bg: #FFFFFF;
+    --card-border: #E0E0E0;
+    --primary-text-dark: #333333;
+    --secondary-text-dark: #666666;
+    --input-border-light: #CCCCCC;
+    --button-hover: #3A7BBF;
+    --alert-error: #FF4136;
+    --alert-success: #28A745;
+
+    /* Dots background variables */
+    --dot-color: rgba(0, 0, 0, 0.05); /* Light dots */
+    --dot-size: 1px;
+    --dot-spacing: 20px;
+    --animation-speed: 60s; /* Kecepatan animasi titik */
+}
+
+body {
+    margin: 0;
+    padding: 0;
+    font-family: "Inter", sans-serif;
+    color: var(--primary-text-dark);
+    line-height: 1.6;
+}
+
+/* Base styles for login/register/password pages */
+body.login-body {
+    background-color: var(--background-base);
+    min-height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: relative;
+    overflow: hidden;
+}
+
+body.login-body::before,
+body.login-body::after {
+    content: '';
+    position: fixed;
+    pointer-events: none;
+    z-index: -1;
+}
+body.login-body::before { /* Overlay Fading */
+    top: 0; left: 0; width: 100%; height: 100%;
+    background: linear-gradient(to bottom, var(--background-base) 0%, transparent 10%, transparent 90%, var(--background-base) 100%);
+}
+body.login-body::after { /* Pola Titik */
+    top: -100%; left: 0; width: 100%; height: 200%;
+    background-image: radial-gradient(circle at center, var(--dot-color) var(--dot-size), transparent var(--dot-size));
+    background-size: var(--dot-spacing) var(--dot-spacing);
+    animation: moveDotsUp var(--animation-speed) linear infinite;
+}
+@keyframes moveDotsUp { from { transform: translateY(0); } to { transform: translateY(50%); } }
+
+
+.login-wrapper {
+    position: relative;
+    z-index: 10;
+    width: 100%;
+    max-width: 420px;
+    padding: 2rem;
+    box-sizing: border-box;
+}
+
+.login-container {
+    background-color: var(--card-bg);
+    padding: 2.5rem;
+    border-radius: 12px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+    text-align: center;
+    border: 1px solid var(--card-border);
+}
+
+.login-logo {
+    max-width: 100px;
+    margin-bottom: 1.5rem;
+}
+
+.login-header h2 {
+    font-size: 1.8rem;
+    color: var(--primary-text-dark);
+    margin-bottom: 0.5rem;
+    font-weight: 700;
+}
+
+.login-header p {
+    font-size: 1rem;
+    color: var(--secondary-text-dark);
+    margin-bottom: 2rem;
+}
+
+.input-group {
+    margin-bottom: 1.2rem;
+    text-align: left;
+    position: relative;
+}
+
+.input-with-icon {
+    position: relative;
+}
+
+.icon-input {
+    position: absolute;
+    left: 1rem;
+    top: 50%;
+    transform: translateY(-50%);
+    color: var(--secondary-text-dark);
+}
+
+.form-control {
+    width: 100%;
+    padding: 1rem 1rem 1rem 3rem; /* Padding kiri lebih besar untuk ikon */
+    font-size: 1rem;
+    border: 1px solid var(--input-border-light);
+    border-radius: 8px;
+    box-sizing: border-box;
+    transition: border-color 0.2s, box-shadow 0.2s;
+}
+
+.form-control::placeholder {
+    color: var(--secondary-text-dark);
+    opacity: 0.7;
+}
+
+.form-control:focus {
+    outline: none;
+    border-color: var(--primary-color);
+    box-shadow: 0 0 0 3px rgba(74, 144, 226, 0.3);
+}
+
+.sr-only {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    padding: 0;
+    margin: -1px;
+    overflow: hidden;
+    clip: rect(0, 0, 0, 0);
+    white-space: nowrap;
+    border-width: 0;
+}
+
+.form-options {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 1.5rem;
+    font-size: 0.9rem;
+}
+
+.checkbox-label {
+    display: flex;
+    align-items: center;
+    color: var(--secondary-text-dark);
+}
+
+.checkbox-label input[type="checkbox"] {
+    margin-right: 0.5rem;
+    accent-color: var(--primary-color); /* Warna checkbox */
+}
+
+.form-options a {
+    color: var(--primary-color);
+    text-decoration: none;
+    font-weight: 500;
+    transition: color 0.2s;
+}
+
+.form-options a:hover {
+    color: var(--button-hover);
+}
+
+.btn-login {
+    width: 100%;
+    padding: 1rem;
+    background-color: var(--primary-color);
+    color: white;
+    border: none;
+    border-radius: 8px;
+    font-size: 1.1rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background-color 0.2s, box-shadow 0.2s;
+}
+
+.btn-login:hover {
+    background-color: var(--button-hover);
+    box-shadow: 0 4px 15px rgba(74, 144, 226, 0.4);
+}
+
+.register-link {
+    margin-top: 1.5rem;
+    font-size: 0.95rem;
+    color: var(--secondary-text-dark);
+}
+
+.register-link a {
+    color: var(--primary-color);
+    text-decoration: none;
+    font-weight: 600;
+    transition: color 0.2s;
+}
+
+.register-link a:hover {
+    color: var(--button-hover);
+}
+
+/* Alert messages */
+.alert {
+    padding: 0.75rem 1rem;
+    margin-bottom: 1rem;
+    border-radius: 0.5rem;
+    font-weight: 500;
+    text-align: left;
+}
+.alert-error {
+    background-color: #fcebeb;
+    border: 1px solid var(--alert-error);
+    color: var(--alert-error);
+}
+.alert-success {
+    background-color: #e6ffed;
+    border: 1px solid var(--alert-success);
+    color: var(--alert-success);
+}

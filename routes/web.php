@@ -1,41 +1,91 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+use Illuminate\Support\Facades\Auth; // Tambahkan ini untuk Auth::user() di closure
 
-Route::get('/dashboard', function () {
-    return view('dashboard');
-})->middleware(['auth'])->name('dashboard');
+// ==========================================================
+// IMPORT CONTROLLERS
+// ==========================================================
 
+// Auth Controllers
 use App\Http\Controllers\Auth\{
-    LoginController, RegisterController, LogoutController
+    LoginController,
+    RegisterController,
+    LogoutController,
+    ForgotPasswordController,
+    ResetPasswordController
 };
 
+// Admin Controllers
 use App\Http\Controllers\Admin\{
     DashboardController as AdminDashboardController,
-    UserController, DepartmentController, CourseController,
-    ClassSectionController, AcademicYearController,
-    ApprovalController, ReportController
+    UserController,
+    DepartmentController,
+    CourseController,
+    ClassSectionController,
+    AcademicYearController,
+    ApprovalController,
+    ReportController
 };
+
+// Student Controllers
 use App\Http\Controllers\Student\{
     DashboardController as StudentDashboardController,
-    EnrollmentController, ProfileController, GradeController
+    EnrollmentController,
+    ProfileController,
+    GradeController
 };
+
+// Lecturer Controllers
 use App\Http\Controllers\Lecturer\{
     DashboardController as LecturerDashboardController,
-    ClassController, AttendanceController, GradingController
+    ClassController,
+    AttendanceController,
+    GradingController
 };
 
-// ============ AUTH ============
+// ==========================================================
+// ROUTES
+// ==========================================================
+
+// Route Default Dashboard (untuk setelah login atau saat mengakses /dashboard)
+Route::get('/dashboard', function () {
+    if (Auth::check()) { // Pastikan user sudah login
+        if (Auth::user()->role === 'admin') {
+            return redirect()->route('admin.dashboard');
+        } elseif (Auth::user()->role === 'student') {
+            return redirect()->route('student.dashboard');
+        } elseif (Auth::user()->role === 'lecturer') {
+            return redirect()->route('lecturer.dashboard');
+        }
+    }
+    // Fallback jika tidak ada role yang cocok atau belum login (jarang tercapai)
+    return redirect()->route('login');
+})->middleware(['auth'])->name('dashboard');
+
+
+// ============ AUTHENTICATION ROUTES ============
 Route::middleware('guest')->group(function () {
+    // Login
     Route::get('/', [LoginController::class, 'showLoginForm'])->name('login');
     Route::post('/login', [LoginController::class, 'login'])->name('login.post');
-    // PERUBAHAN DI SINI: showRegisterForm menjadi showRegistrationForm
-    Route::get('/register', [RegisterController::class, 'showRegistrationForm'])->name('register'); 
+
+    // Register
+    Route::get('/register', [RegisterController::class, 'showRegistrationForm'])->name('register');
     Route::post('/register', [RegisterController::class, 'register'])->name('register.post');
+
+    // Password Reset Routes
+    Route::get('forgot-password', [ForgotPasswordController::class, 'showLinkRequestForm'])->name('password.request');
+    Route::post('forgot-password', [ForgotPasswordController::class, 'sendResetLinkEmail'])->name('password.email');
+    Route::get('reset-password/{token}', [ResetPasswordController::class, 'showResetForm'])->name('password.reset');
+    Route::post('reset-password', [ResetPasswordController::class, 'reset'])->name('password.update');
 });
+
+// Logout Route (membutuhkan user yang sudah login)
 Route::post('/logout', [LogoutController::class, 'logout'])->name('logout')->middleware('auth');
 
-// ============ ADMIN ============
+
+// ============ ADMIN ROUTES ============
 Route::middleware(['auth', 'role:admin'])->prefix('admin')->name('admin.')->group(function () {
     Route::get('/dashboard', [AdminDashboardController::class, 'index'])->name('dashboard');
     Route::resource('users', UserController::class);
@@ -49,7 +99,7 @@ Route::middleware(['auth', 'role:admin'])->prefix('admin')->name('admin.')->grou
     Route::get('/reports', [ReportController::class, 'index'])->name('reports.index');
 });
 
-// ============ STUDENT ============
+// ============ STUDENT ROUTES ============
 Route::middleware(['auth', 'role:student'])->prefix('student')->name('student.')->group(function () {
     Route::get('/dashboard', [StudentDashboardController::class, 'index'])->name('dashboard');
     Route::get('/enrollment', [EnrollmentController::class, 'index'])->name('enrollment.index');
@@ -60,7 +110,7 @@ Route::middleware(['auth', 'role:student'])->prefix('student')->name('student.')
     Route::post('/profile/update', [ProfileController::class, 'update'])->name('profile.update');
 });
 
-// ============ LECTURER ============
+// ============ LECTURER ROUTES ============
 Route::middleware(['auth', 'role:lecturer'])->prefix('lecturer')->name('lecturer.')->group(function () {
     Route::get('/dashboard', [LecturerDashboardController::class, 'index'])->name('dashboard');
     Route::get('/classes', [ClassController::class, 'index'])->name('classes.index');

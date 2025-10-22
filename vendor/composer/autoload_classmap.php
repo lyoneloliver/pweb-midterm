@@ -24,6 +24,7 @@ return array(
     'App\\Http\\Controllers\\Lecturer\\GradingController' => $baseDir . '/app/Http/Controllers/Lecturer/GradingController.php',
     'App\\Http\\Controllers\\Student\\EnrollmentController' => $baseDir . '/app/Http/Controllers/Student/EnrollmentController.php',
     'App\\Http\\Controllers\\UsersController' => $baseDir . '/app/Http/Controllers/UsersController.php',
+    'App\\Http\\Kernel' => $baseDir . '/app/Http/Kernel.php',
     'App\\Http\\Middleware\\LogActivity' => $baseDir . '/app/Http/Middleware/LogActivity.php',
     'App\\Http\\Middleware\\RoleMiddleware' => $baseDir . '/app/Http/Middleware/RoleMiddleware.php',
     'App\\Models\\AcademicYears' => $baseDir . '/app/Models/AcademicYears.php',
