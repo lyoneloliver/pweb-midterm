@@ -3,21 +3,29 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Login - Sistem FRS</title>
+    <title>ITSr Portal - Secure Login</title>
 
-    {{-- Link ke CSS custom --}}
+    {{-- Link to your custom CSS --}}
     <link rel="stylesheet" href="{{ asset('css/custom.css') }}">
+    
+    {{-- Google Fonts: Inter --}}
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 </head>
 <body class="login-body">
 
-    <div class="login-container">
-        <div class="login-card">
+    <div class="login-wrapper">
+
+        <div class="login-container">
+            <img src="{{ asset('logo.png') }}" alt="ITSr Logo" class="login-logo">
+            
             <div class="login-header">
-                <img src="{{ asset('logo.png') }}" alt="Logo Universitas" class="login-logo">
-                <h2>Sistem FRS</h2>
-                <p>Formulir Rencana Studi Mahasiswa</p>
+                <h2>Welcome Back to ITSr</h2>
+                <p>Please sign in to your secure portal.</p>
             </div>
 
+            {{-- Display flash messages --}}
             @if (session('error'))
                 <div class="alert alert-error">{{ session('error') }}</div>
             @endif
@@ -28,25 +36,36 @@
             <form method="POST" action="{{ route('login') }}">
                 @csrf
 
-                <div class="form-group">
-                    <label for="email">Alamat Email</label>
-                    <input type="email" name="email" id="email" class="form-control" placeholder="contoh: abid@student.ac.id" required autofocus>
+                <div class="input-group">
+                    <label for="email" class="sr-only">Email Address</label>
+                    <div class="input-with-icon">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon-input"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"></path><polyline points="22,6 12,13 2,6"></polyline></svg>
+                        <input type="email" name="email" id="email" class="form-control" 
+                               placeholder="Email Address" value="{{ old('email') }}" required autofocus>
+                    </div>
                 </div>
 
-                <div class="form-group">
-                    <label for="password">Kata Sandi</label>
-                    <input type="password" name="password" id="password" class="form-control" placeholder="••••••••" required>
+                <div class="input-group">
+                    <label for="password" class="sr-only">Password</label>
+                    <div class="input-with-icon">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon-input"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect><path d="M7 11V7a5 5 0 0 1 10 0v4"></path></svg>
+                        <input type="password" name="password" id="password" class="form-control" 
+                               placeholder="Password" required>
+                    </div>
                 </div>
 
                 <div class="form-options">
-                    <label><input type="checkbox" name="remember"> Ingat saya</label>
-                    <a href="#">Lupa password?</a>
+                    <label class="checkbox-label">
+                        <input type="checkbox" name="remember"> Remember Me
+                    </label>
+                    <a href="#">Forgot Password?</a>
                 </div>
 
-                <button type="submit" class="btn-login">Masuk</button>
+                <button type="submit" class="btn-login">Sign In</button>
 
-                <p class="register-link">Belum punya akun?
-                    <a href="{{ route('register') }}">Daftar sekarang</a>
+                <p class="register-link">
+                    Don’t have an account? 
+                    <a href="{{ route('register') }}">Create an Account</a>
                 </p>
             </form>
         </div>
