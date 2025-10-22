@@ -10,10 +10,12 @@ use Illuminate\Support\Facades\Hash;
 
 class RegisterController extends Controller
 {
-    public function showRegistrationForm()
+    public function showRegisterForm()
     {
-        return view('auth.register');
+        $departments = \App\Models\Departments::all();
+        return view('auth.register', compact('departments'));
     }
+
 
     public function register(Request $request)
     {
@@ -32,7 +34,7 @@ class RegisterController extends Controller
 
         Students::create([
             'user_id' => $user->id,
-            'department_id' => 1, // default or selected dept
+            'department_id' => $request->department_id,
             'student_id_number' => 'S' . now()->timestamp,
             'admission_year' => date('Y'),
         ]);
