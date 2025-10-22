@@ -10,7 +10,7 @@
             <div class="card shadow-sm">
                 <div class="card-body text-center">
                     <h5>Total Mata Kuliah</h5>
-                    <h3>{{ $totalCourses }}</h3>
+                    <h3>{{ $totalCourses??0 }}</h3>
                 </div>
             </div>
         </div>
@@ -18,7 +18,7 @@
             <div class="card shadow-sm">
                 <div class="card-body text-center">
                     <h5>IPK Saat Ini</h5>
-                    <h3>{{ $gpa }}</h3>
+                    <h3>{{ $gpa??0 }}</h3>
                 </div>
             </div>
         </div>
