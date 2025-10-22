@@ -1,9 +1,15 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+
+Route::get('/dashboard', function () {
+    return view('dashboard');
+})->middleware(['auth'])->name('dashboard');
+
 use App\Http\Controllers\Auth\{
     LoginController, RegisterController, LogoutController
 };
+
 use App\Http\Controllers\Admin\{
     DashboardController as AdminDashboardController,
     UserController, DepartmentController, CourseController,
