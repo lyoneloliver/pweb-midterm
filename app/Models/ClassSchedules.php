@@ -5,16 +5,16 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 
-class Attendances extends Model
+class ClassSchedules extends Model
 {
     use HasFactory;
 
     protected $fillable = [
-        'enrollment_id', 'attendance_date', 'status', 'notes'
+        'class_section_id', 'day', 'start_time', 'end_time', 'room'
     ];
 
-    public function enrollment()
+    public function classSection()
     {
-        return $this->belongsTo(Enrollments::class);
+        return $this->belongsTo(ClassSections::class);
     }
 }
