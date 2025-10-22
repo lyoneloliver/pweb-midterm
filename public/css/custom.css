@@ -18,9 +18,9 @@
     --icon-color-dark: #888; /* Darker icon color */
     
     /* Variables for the animated dot pattern */
-    --dot-color: rgba(0, 0, 0, 0.15); /* INCREASED OPACITY: More visible black dots */
-    --dot-size: 1px;
-    --dot-spacing: 25px; /* Adjust spacing between dots */
+    --dot-color: rgba(0, 0, 0, 0.1); /* **DITEBALKAN: Opacity dinaikkan ke 0.3** */
+    --dot-size: 2px;
+    --dot-spacing: 46.85px; /* Adjust spacing between dots */
     --animation-speed: 60s; /* Speed of dots moving upwards */
 
     --alert-error-bg: #ffebee;
@@ -373,7 +373,7 @@ body.login-body::after {
     }
     /* Mobile pattern adjustments */
     body.login-body::after {
-        background-size: 35px 35px; /* Smaller dot spacing on mobile */
-        opacity: 0.9; /* Slightly more visible dots */
+        background-size: 30px 30px; /* **Diperbarui: Jarak antar titik sedikit dikurangi** */
+        opacity: 0.9; 
     }
 }
