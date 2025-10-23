@@ -5,9 +5,7 @@
 @section('content')
 <div class="container py-5">
     <div class="row justify-content-center">
-        <div class="col-md-6">
-            <div class="card shadow-lg rounded-4 border-0">
-                <div class="card-body p-4">
+                <div class="card-body p-1">
                     <h3 class="text-center mb-4">Registrasi Akun Mahasiswa</h3>
 
                     {{-- Tampilkan pesan sukses atau error --}}
@@ -90,11 +88,6 @@
                     </div>
                 </div>
             </div>
-
-            <p class="text-center text-muted mt-3 small">
-                &copy; {{ date('Y') }} FRS System. All Rights Reserved.
-            </p>
-        </div>
     </div>
 </div>
 @endsection
